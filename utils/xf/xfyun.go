@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-type xfOcr struct {
+type XfOcr struct {
 	appId     string
 	apiSecret string
 	apiKey    string
@@ -25,8 +25,8 @@ type xfOcr struct {
 	h         http.Client
 }
 
-func NewXfOcr(appId string, apiSecret string, apiKey string, webAPI string, host string) *xfOcr {
-	return &xfOcr{
+func NewXfOcr(appId string, apiSecret string, apiKey string, webAPI string, host string) *XfOcr {
+	return &XfOcr{
 		appId:     appId,
 		apiSecret: apiSecret,
 		apiKey:    apiKey,
@@ -38,14 +38,14 @@ func NewXfOcr(appId string, apiSecret string, apiKey string, webAPI string, host
 	}
 }
 
-func (m *xfOcr) xfAuthorization() {
+func (m *XfOcr) xfAuthorization() {
 	// now := time.Now()
 	// date := now.Format(time.RFC1123)
 	// api_key="$api_key",algorithm="hmac-sha256",headers="host date request-line",signature="$signature"
 
 }
 
-func (m *xfOcr) DefaultReqBody() *XfOcrReqBody {
+func (m *XfOcr) DefaultReqBody() *XfOcrReqBody {
 	return &XfOcrReqBody{
 		Header: XfOcrReqHeader{
 			AppID:  m.appId,
@@ -71,7 +71,7 @@ func (m *xfOcr) DefaultReqBody() *XfOcrReqBody {
 	}
 }
 
-func (m *xfOcr) parseUrl() (*Url, error) {
+func (m *XfOcr) parseUrl() (*Url, error) {
 	stidx := strings.Index(m.webAPI, "://")
 	host := m.webAPI[stidx+3:]
 	schema := m.webAPI[:stidx+3]
@@ -89,7 +89,7 @@ func (m *xfOcr) parseUrl() (*Url, error) {
 	return u, nil
 }
 
-func (m *xfOcr) assembleWsAuthUrl(method string) (string, error) {
+func (m *XfOcr) assembleWsAuthUrl(method string) (string, error) {
 	u := Url{
 		Host:   "api.xf-yun.com",
 		Path:   "/v1/private/sf8e6aca1",
@@ -113,7 +113,7 @@ func (m *xfOcr) assembleWsAuthUrl(method string) (string, error) {
 	return reqUrl, nil
 }
 
-func (m *xfOcr) ImgOcr(reqBody *XfOcrReqBody) (wordList []string, err error) {
+func (m *XfOcr) ImgOcr(reqBody *XfOcrReqBody) (wordList []string, err error) {
 	reqUrl, err := m.assembleWsAuthUrl("POST")
 	if err != nil {
 		return
@@ -177,7 +177,7 @@ func (m *xfOcr) ImgOcr(reqBody *XfOcrReqBody) (wordList []string, err error) {
 	return
 }
 
-func (m *xfOcr) getImgBase64FromUrl(imgUrl string) (imgBase64 string, err error) {
+func (m *XfOcr) getImgBase64FromUrl(imgUrl string) (imgBase64 string, err error) {
 	var (
 		resp     *http.Response
 		respByte []byte
@@ -199,7 +199,7 @@ func (m *xfOcr) getImgBase64FromUrl(imgUrl string) (imgBase64 string, err error)
 	return
 }
 
-func (m *xfOcr) getImgBase64FromPath(imgPath string) (imgBase64 string, err error) {
+func (m *XfOcr) getImgBase64FromPath(imgPath string) (imgBase64 string, err error) {
 	var (
 		f     *os.File
 		fByte []byte
@@ -215,7 +215,7 @@ func (m *xfOcr) getImgBase64FromPath(imgPath string) (imgBase64 string, err erro
 	return
 }
 
-func (m *xfOcr) ImgOcrXfFromPath(imgPath string) (wordList []string, err error) {
+func (m *XfOcr) ImgOcrXfFromPath(imgPath string) (wordList []string, err error) {
 	imgBase64, err := m.getImgBase64FromPath(imgPath)
 	if err != nil {
 		return
@@ -225,7 +225,7 @@ func (m *xfOcr) ImgOcrXfFromPath(imgPath string) (wordList []string, err error) 
 	return m.ImgOcr(reqBody)
 }
 
-func (m *xfOcr) ImgOcrXfFromUrl(imgUrl string) (wordList []string, err error) {
+func (m *XfOcr) ImgOcrXfFromUrl(imgUrl string) (wordList []string, err error) {
 	imgBase64, err := m.getImgBase64FromUrl(imgUrl)
 	if err != nil {
 		return

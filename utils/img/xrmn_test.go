@@ -1,6 +1,7 @@
-package xf
+package img
 
 import (
+	"github.com/jaryf/mutils/utils/xf"
 	"testing"
 )
 
@@ -15,25 +16,16 @@ const (
 	imgPath   = "5D155510249.jpg"
 )
 
-var xf *XfOcr
+var xfClient *xf.XfOcr
 
 func init() {
-	xf = NewXfOcr(APPID, APISecret, APIKey, xfWebAPI, xfHost)
+	xfClient = xf.NewXfOcr(APPID, APISecret, APIKey, xfWebAPI, xfHost)
 }
 
-func TestXfOcr_ImgOcrXfFromUrl(t *testing.T) {
-	xf := NewXfOcr(APPID, APISecret, APIKey, xfWebAPI, xfHost)
-	wordList, err := xf.ImgOcrXfFromUrl(imgUrl2)
+func TestCheckHaveXrmn(t *testing.T) {
+	res, err := CheckHaveXrmn(xfClient, imgUrl2, "xrmn")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(wordList)
-}
-
-func TestXfOcr_ImgOcrXfFromPath(t *testing.T) {
-	wordList, err := xf.ImgOcrXfFromPath(imgPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(wordList)
+	t.Log(res)
 }
