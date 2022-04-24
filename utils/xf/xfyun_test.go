@@ -37,3 +37,14 @@ func TestXfOcr_ImgOcrXfFromPath(t *testing.T) {
 	}
 	t.Log(wordList)
 }
+
+func BenchmarkXfOcr_ImgOcrXfFromPath(b *testing.B) {
+	b.StopTimer()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, err := xf.ImgOcrXfFromPath(imgPath)
+		if err != nil {
+			return
+		}
+	}
+}
